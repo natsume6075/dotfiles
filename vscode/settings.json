@@ -76,19 +76,16 @@
     "vim.useCtrlKeys": true,                    // ctrl を使った操作を有効化
     "vim.visualstar": true,                     // * でカーソル下にあるワードを検索
     "vim.sneak": true,                          // s<Char><Char> でカーソル移動
+
+    // @sync os=mac
     "vim.autoSwitchInputMethod.enable": true,
-    // @sync host=home os=mac
-    {
-        "vim.autoSwitchInputMethod.defaultIM": "",
-        "vim.autoSwitchInputMethod.obtainIMCmd": "/usr/local/bin/im-select",
-        "vim.autoSwitchInputMethod.switchIMCmd": "/usr/local/bin/im-select {im}"
-    },
-    // @sync host=home os=windows
-    {
-        "vim.autoSwitchInputMethod.defaultIM": "",
-        "vim.autoSwitchInputMethod.obtainIMCmd": "/usr/local/bin/im-select",
-        "vim.autoSwitchInputMethod.switchIMCmd": "/usr/local/bin/im-select {im}"
-    },
+    // @sync os=windows
+    // "vim.autoSwitchInputMethod.enable": true,
+
+    // "vim.autoSwitchInputMethod.defaultIM": "com.apple.keylcyout.US",
+    // "vim.autoSwitchInputMethod.obtainIMCmd": "/usr/local/bin/im-select",
+    // "vim.autoSwitchInputMethod.switchIMCmd": "/usr/local/bin/im-select {im}",
+
     "terminal.integrated.shell.linux": "/usr/bin/fish",
 
     "sync.gist": "ce33c1b393d1f5bac6de3d7802db7e19",

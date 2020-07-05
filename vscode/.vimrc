@@ -1,5 +1,3 @@
-inoremap a c
-
 noremap H _
 noremap L $
 noremap J <C-f>
