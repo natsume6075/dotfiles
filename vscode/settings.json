@@ -78,7 +78,7 @@
     "vim.sneak": true,                          // s<Char><Char> でカーソル移動
 
     // @sync os=mac
-    "vim.autoSwitchInputMethod.enable": true,
+    // // "vim.autoSwitchInputMethod.enable": true,
     // @sync os=windows
     // "vim.autoSwitchInputMethod.enable": true,
 
