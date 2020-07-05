@@ -13,16 +13,16 @@
         "**/.DS_Store": true
     },
     "files.associations": {
-                         // 拡張子と vscode のモードの関連付け
+                             // 拡張子と vscode のモードの関連付け
         "*.sql": "sql"
     },
     "files.trimFinalNewlines": true,            // 保存時にファイルの最後に存在する空行を削除
-    "files.insertFinalNewline": true,           // 保存時にファイルの最後に空行を挿入
+    "files.insertFinalNewline": true,           // 保存時にファイルの最後に空行を挿入(trimFinalNewlines と共存させると、末尾が1行のみになるように調整)
     "files.trimTrailingWhitespace": true,       // 保存時に行の終端に存在する空白文字を削除
 
     "window.restoreFullscreen": true,
     "window.zoomLevel": 0,
-    "window.menuBarVisibility": "toggle",       // alt で menubar を表示、フォーカス失ったら非表示
+    "window.menuBarVisibility": "toggle",       // alt で menubar を表示、フォーカス失ったら非表示 (windows のみ)
 
     "workbench.editor.showTabs": true,
     "workbench.editor.tabSizing": "shrink",     // タブが多い場合に、タブの幅を小さくしてすべて表示
@@ -60,16 +60,12 @@
     "editor.tabCompletion": "on",
     "editor.tokenColorCustomizations": {
         "comments": {
-            "fontStyle": "",
+            "fontStyle": ""
         }
     },
 
-
     // vim local な keybindings は keybindings.json ではなくこちらに書く
     "vim.vimrc.enable": true,
-
-    // @sync os=windows host=home-pc
-    // "vim.vimrc.path": "C:\\Users\\natsu\\Dropbox\\env_win\\vim\\.vimrc",
     "vim.vimrc.path": "~/Dropbox/dotfiles/vscode/.vimrc",
 
     "vim.leader": "<Space>",
@@ -80,7 +76,19 @@
     "vim.useCtrlKeys": true,                    // ctrl を使った操作を有効化
     "vim.visualstar": true,                     // * でカーソル下にあるワードを検索
     "vim.sneak": true,                          // s<Char><Char> でカーソル移動
-
+    "vim.autoSwitchInputMethod.enable": true,
+    // @sync host=home os=mac
+    {
+        "vim.autoSwitchInputMethod.defaultIM": "",
+        "vim.autoSwitchInputMethod.obtainIMCmd": "/usr/local/bin/im-select",
+        "vim.autoSwitchInputMethod.switchIMCmd": "/usr/local/bin/im-select {im}"
+    },
+    // @sync host=home os=windows
+    {
+        "vim.autoSwitchInputMethod.defaultIM": "",
+        "vim.autoSwitchInputMethod.obtainIMCmd": "/usr/local/bin/im-select",
+        "vim.autoSwitchInputMethod.switchIMCmd": "/usr/local/bin/im-select {im}"
+    },
     "terminal.integrated.shell.linux": "/usr/bin/fish",
 
     "sync.gist": "ce33c1b393d1f5bac6de3d7802db7e19",
@@ -94,7 +102,7 @@
         "editor.wordWrap": "on",
         "editor.quickSuggestions": true,
         "editor.snippetSuggestions": "top",
-        "editor.acceptSuggestionOnEnter": "off",
+        "editor.acceptSuggestionOnEnter": "off"
     },
     "editor.codeActionsOnSave": null
 }
