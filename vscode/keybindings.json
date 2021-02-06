@@ -2,6 +2,7 @@
     /*
      * Documentation
      * https://code.visualstudio.com/docs/getstarted/keybindings
+     * https://code.visualstudio.com/docs/getstarted/keybindings#_when-clause-contexts
      *
      */
 
@@ -58,12 +59,12 @@
     {
         "key": "ctrl+f",
         "command": "workbench.view.explorer",
-        "when": "!explorerViewletVisible && vim.mode != 'SearchInProgressMode' && vim.mode != 'Insert'"
+        "when": "!filesExplorerFocus && vim.mode != 'SearchInProgressMode' && vim.mode == 'Normal'"
     },
     {
         "key": "ctrl+f",
         "command": "workbench.action.toggleSidebarVisibility",
-        "when": "explorerViewletVisible && !searchViewletVisible && !inDebugMode && vim.mode != 'SearchInProgressMode' && vim.mode != 'Insert'"
+        "when": "filesExplorerFocus && !searchViewletVisible && !inDebugMode && vim.mode != 'SearchInProgressMode' && vim.mode == 'Normal'"
     },
     //----------------------------------------------------------
     // サイドバーでの操作
@@ -71,7 +72,7 @@
     {
         "key": "space",
         "command": "filesExplorer.openFilePreserveFocus",
-        "when": "explorerViewletFocus && explorerViewletVisible"
+        "when": "filesExplorerFocuse && explorerViewletVisible"
     },
     //----------------------------------------------------------
     // vscodeのterminalのトグル(*->terminal)
@@ -79,12 +80,12 @@
     {
         "key": "ctrl+t",
         "command": "workbench.action.terminal.toggleTerminal",
-        "when": "!terminalFocus && vim.mode != 'SearchInProgressMode' && vim.mode != 'Insert'"
+        "when": "!terminalFocus && vim.mode != 'SearchInProgressMode' && vim.mode == 'Normal'"
     },
     {
         "key": "ctrl+t",
         "command": "workbench.action.terminal.toggleTerminal",
-        "when": "terminalFocus && vim.mode != 'SearchInProgressMode' && vim.mode != 'Insert'"
+        "when": "terminalFocus && vim.mode != 'SearchInProgressMode' && vim.mode == 'Normal'"
     },
     //----------------------------------------------------------
     // panelのトグル(*->panel)

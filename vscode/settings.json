@@ -29,7 +29,6 @@
     "workbench.statusBar.visible": true,
     "workbench.activityBar.visible": false,
     "workbench.sideBar.location": "left",
-    "workbench.colorTheme": "GitHub Dark",
 
     "explorer.confirmDragAndDrop": false,        // ファイル/フォルダの誤移動防止ダイアログの表示
 
@@ -101,5 +100,6 @@
         "editor.snippetSuggestions": "top",
         "editor.acceptSuggestionOnEnter": "off"
     },
-    "editor.codeActionsOnSave": null
+    "editor.codeActionsOnSave": null,
+    "debug.onTaskErrors": "showErrors"
 }
