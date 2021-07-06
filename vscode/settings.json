@@ -21,13 +21,12 @@
     "files.trimTrailingWhitespace": true,       // 保存時に行の終端に存在する空白文字を削除
 
     "window.restoreFullscreen": true,
-    "window.zoomLevel": 0,
+    "window.zoomLevel": 1,
     "window.menuBarVisibility": "toggle",       // alt で menubar を表示、フォーカス失ったら非表示 (windows のみ)
 
     "workbench.editor.showTabs": true,
     "workbench.editor.tabSizing": "shrink",     // タブが多い場合に、タブの幅を小さくしてすべて表示
     "workbench.statusBar.visible": true,
-    "workbench.activityBar.visible": false,
     "workbench.sideBar.location": "left",
 
     "explorer.confirmDragAndDrop": false,        // ファイル/フォルダの誤移動防止ダイアログの表示
