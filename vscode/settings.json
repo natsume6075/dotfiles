@@ -21,7 +21,6 @@
     "files.trimTrailingWhitespace": true,       // 保存時に行の終端に存在する空白文字を削除
 
     "window.restoreFullscreen": true,
-    "window.zoomLevel": 1,
     "window.menuBarVisibility": "toggle",       // alt で menubar を表示、フォーカス失ったら非表示 (windows のみ)
 
     "workbench.editor.showTabs": true,
@@ -100,5 +99,6 @@
         "editor.acceptSuggestionOnEnter": "off"
     },
     "editor.codeActionsOnSave": null,
-    "debug.onTaskErrors": "showErrors"
+    "debug.onTaskErrors": "showErrors",
+    "workbench.activityBar.visible": false
 }
