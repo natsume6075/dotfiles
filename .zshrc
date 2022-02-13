@@ -4,12 +4,19 @@ setopt IGNOREEOF
 # 日本語を使用
 export LANG=ja_JP.UTF-8
 
-# パスを追加したい場合
+# PATH
 export PATH="$HOME/bin:$PATH"
+export PATH="//Applications/gnuplot.app:$PATH"
+export PATH=/usr/local/bin:$PATH
+export PATH=/usr/local/Cellar/gcc/9.2.0_3/bin/:$PATH
 
 # 色を使用
 autoload -Uz colors
 colors
+
+# プロンプト
+autoload -U promptinit; promptinit
+prompt pure
 
 # 補完
 autoload -Uz compinit
@@ -40,13 +47,11 @@ setopt pushd_ignore_dups
 # コマンドミスを修正
 setopt correct
 
-
 # グローバルエイリアス
 alias -g L='| less'
 alias -g H='| head'
 alias -g G='| grep'
 alias -g GI='| grep -ri'
-
 
 # エイリアス
 alias lst='ls -ltr --color=auto'
@@ -58,6 +63,7 @@ alias v='vim'
 alias vi='vim'
 alias vz='vim ~/.zshrc'
 alias c='cdr'
+
 # historyに日付を表示
 alias h='fc -lt '%F %T' 1'
 alias cp='cp -i'
@@ -141,3 +147,4 @@ zstyle ':vcs_info:*' formats "%F{green}%c%u[%b]%f"
 zstyle ':vcs_info:*' actionformats '[%b|%a]'
 precmd () { vcs_info }
 RPROMPT=$RPROMPT'${vcs_info_msg_0_}'
+
