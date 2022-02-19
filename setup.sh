@@ -5,4 +5,5 @@ echo $SCRIPT_DIR
 ln -sfv $SCRIPT_DIR/.gitconfig ~/.gitconfig
 ln -sfv $SCRIPT_DIR/.zshrc ~/.zshrc
 ln -sfv $SCRIPT_DIR/.vimrc ~/.vimrc
+ln -sfv $SCRIPT_DIR/.tmux.conf ~/.tmux.conf
 
