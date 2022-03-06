@@ -1,9 +1,6 @@
 # Ctrl+Dでログアウトしてしまうことを防ぐ
 setopt IGNOREEOF
 
-# 日本語を使用
-export LANG=ja_JP.UTF-8
-
 # PATH
 export PATH="$HOME/bin:$PATH"
 export PATH="//Applications/gnuplot.app:$PATH"
@@ -86,8 +83,8 @@ cdpath=(~)
 # 区切り文字の設定
 autoload -Uz select-word-style
 select-word-style default
-zstyle ':zle:*' word-chars "_-./;@"
-zstyle ':zle:*' word-style unspecified
+    zstyle ':zle:*' word-chars "_-./;@"
+    zstyle ':zle:*' word-style unspecified
 
 # Ctrl+sのロック, Ctrl+qのロック解除を無効にする
 setopt no_flow_control
@@ -128,13 +125,13 @@ alias zmv='noglob zmv -W'
 
 # mkdirとcdを同時実行
 function mkcd() {
-  if [[ -d $1 ]]; then
-      echo "$1 already exists!"
-          cd $1
-            else
-                mkdir -p $1 && cd $1
-                  fi
-                  }
+    if [[ -d $1 ]]; then
+        echo "$1 already exists!"
+        cd $1
+    else
+        mkdir -p $1 && cd $1
+    fi
+}
 
 # git設定
 RPROMPT="%{${fg[blue]}%}[%~]%{${reset_color}%}"
