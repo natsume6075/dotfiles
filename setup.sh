@@ -12,5 +12,5 @@ ln -sfv $SCRIPT_DIR/.vimrc ~/.vimrc
 ln -sfv $SCRIPT_DIR/.zshenv ~/.zshenv
 
 # symbolic link which is not entorypoint
-ln -sfv $SCRIPT_DIR/.config/zsh ~/.config
+ln -sfv $SCRIPT_DIR/zsh ~/.config
 
