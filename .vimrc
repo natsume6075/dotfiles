@@ -6,6 +6,7 @@ colorscheme desert
 
 set backspace=indent,eol,start
 noremap!  
+set scrolloff=2
 
 set ruler
 set fenc=utf-8
@@ -30,9 +31,8 @@ nnoremap k gk
 
 set list listchars=tab:\▸\-
 set expandtab
-set tabstop=2
-set shiftwidth=2
-
+set tabstop=4
+set shiftwidth=0  " if 0 then use the value of tabstop.
 
 set ignorecase
 set smartcase
