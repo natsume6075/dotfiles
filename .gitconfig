@@ -5,6 +5,7 @@
 
 [core]
     editor = nvim
+	pager = LESSCHARSET=utf-8 less
 
 [diff]
     tool = vimdiff
