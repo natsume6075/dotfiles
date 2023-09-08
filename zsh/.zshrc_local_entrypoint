@@ -1,0 +1,7 @@
+if [[ $NAME == "DESKTOP-IVL0EDA" ]]; then
+    source $ZDOTDIR/local/.zshrc_local_DESKTOP-IVL0EDA
+fi
+if [[ $NAME == "70-24130" ]]; then
+    source $ZDOTDIR/local/.zshrc_local_70-24130
+fi
+

@@ -145,3 +145,5 @@ zstyle ':vcs_info:*' actionformats '[%b|%a]'
 precmd () { vcs_info }
 RPROMPT=$RPROMPT'${vcs_info_msg_0_}'
 
+source $ZDOTDIR/.zshrc_local_entrypoint
+
