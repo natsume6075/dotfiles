@@ -20,6 +20,10 @@ shopt -s histappend
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=1000
 HISTFILESIZE=2000
+bind '"\C-n": history-search-forward'
+bind '"\C-p": history-search-backward'
+bind '"\e[B": history-search-forward'
+bind '"\e[A": history-search-backward'
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -74,6 +78,9 @@ xterm*|rxvt*)
     ;;
 esac
 
+export PS1='\n\[\033[35m\]\u@\h:\[\033[39m\]\w\n\[\033[35m\]\$\[\033[39m\]\[\033[37m\] '
+
+
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
@@ -117,3 +124,4 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
