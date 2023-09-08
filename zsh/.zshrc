@@ -1,3 +1,5 @@
+alias vim='nvim'
+
 # Ctrl+Dでログアウトしてしまうことを防ぐ
 setopt IGNOREEOF
 
@@ -13,7 +15,7 @@ colors
 
 # プロンプト
 autoload -U promptinit; promptinit
-prompt pure
+# prompt pure
 
 # 補完
 autoload -Uz compinit
@@ -55,10 +57,6 @@ alias lst='ls -ltr --color=auto'
 alias l='ls -ltr --color=auto'
 alias la='ls -la --color=auto'
 alias ll='ls -l --color=auto'
-alias so='source'
-alias v='vim'
-alias vi='vim'
-alias vz='vim ~/.zshrc'
 alias c='cdr'
 
 # historyに日付を表示
@@ -90,8 +88,11 @@ select-word-style default
 setopt no_flow_control
 
 # プロンプトを2行で表示、時刻を表示
-PROMPT="%(?.%{${fg[green]}%}.%{${fg[red]}%})%n${reset_color}@${fg[blue]}%m${reset_color}(%*%) %~
-%# "
+# PROMPT="%(?.%{${fg[green]}%}.%{${fg[red]}%})%n${reset_color}@${fg[blue]}%m${reset_color}(%*%) %~
+# %# "
+PROMPT="
+${fg[cyan]}%~
+%(?.%{${fg[magenta]}%}.%{${fg[red]}%})%# ${reset_color}"
 
 # 補完後、メニュー選択モードになり左右キーで移動が出来る
 zstyle ':completion:*:default' menu select=2
@@ -103,13 +104,17 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 bindkey '^r' history-incremental-pattern-search-backward
 bindkey '^s' history-incremental-pattern-search-forward
 
-# コマンドを途中まで入力後、historyから絞り込み
-# 例 ls まで打ってCtrl+pでlsコマンドをさかのぼる、Ctrl+bで逆順
+# TODO Up Dwon にマッピングされてない
 autoload -Uz history-search-end
 zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
 bindkey "^p" history-beginning-search-backward-end
+# bindkey "^[[A" history-beginning-search-backward-end
+# bind '"\e[B": history-search-forward'
+# bind '"\e[A": history-search-backward'
+bindkey "\e[A" history-beginning-search-backward
 bindkey "^b" history-beginning-search-forward-end
+bindkey "^[[B" history-beginning-search-forward-end
 
 # cdrコマンドを有効 ログアウトしても有効なディレクトリ履歴
 # cdr タブでリストを表示
@@ -134,7 +139,7 @@ function mkcd() {
 }
 
 # git設定
-RPROMPT="%{${fg[blue]}%}[%~]%{${reset_color}%}"
+# RPROMPT="%{${fg[blue]}%}[%~]%{${reset_color}%}"
 autoload -Uz vcs_info
 setopt prompt_subst
 zstyle ':vcs_info:git:*' check-for-changes true
