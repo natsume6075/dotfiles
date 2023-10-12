@@ -4,4 +4,6 @@ fi
 if [[ $NAME == "70-24130" ]]; then
     source $ZDOTDIR/local/.zshrc_local_70-24130
 fi
-
+if [[ $NAME == "natsume_3070" ]]; then
+    source $ZDOTDIR/local/.zshrc_local_natsume_3070
+fi
