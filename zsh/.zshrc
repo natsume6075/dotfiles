@@ -1,7 +1,9 @@
 # 不適切なロケール設定を修復する
 eval $(/usr/bin/locale-check C.UTF-8)
 
-alias vim='nvim'
+if command -v nvim >/dev/null; then
+    alias vim='nvim'
+fi
 
 # Ctrl+Dでログアウトしてしまうことを防ぐ
 setopt IGNOREEOF
