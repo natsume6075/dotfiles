@@ -1,7 +1,9 @@
 # 不適切なロケール設定を修復する
 eval $(/usr/bin/locale-check C.UTF-8)
 
-alias vim='nvim'
+if command -v nvim >/dev/null; then
+    alias vim='nvim'
+fi
 
 # Ctrl+Dでログアウトしてしまうことを防ぐ
 setopt IGNOREEOF
@@ -90,13 +92,6 @@ select-word-style default
 # Ctrl+sのロック, Ctrl+qのロック解除を無効にする
 setopt no_flow_control
 
-# プロンプトを2行で表示、時刻を表示
-# PROMPT="%(?.%{${fg[green]}%}.%{${fg[red]}%})%n${reset_color}@${fg[blue]}%m${reset_color}(%*%) %~
-# %# "
-PROMPT="
-${fg[cyan]}%~
-%(?.%{${fg[magenta]}%}.%{${fg[red]}%})%# ${reset_color}"
-
 # 補完後、メニュー選択モードになり左右キーで移動が出来る
 zstyle ':completion:*:default' menu select=2
 
@@ -159,6 +154,24 @@ set tmux_ret $status
 if [[ $status == 0 ]]; then
     tmux new-session -s main
 fi
+
+# プロンプトを2行で表示、時刻を表示
+# PROMPT="%(?.%{${fg[green]}%}.%{${fg[red]}%})%n${reset_color}@${fg[blue]}%m${reset_color}(%*%) %~
+# %# "
+
+# SSH接続している場合のみ、ホスト名・ユーザー名を表示する。
+set_prompt() {
+    if [ -n "$SSH_CONNECTION" ]; then
+        PROMPT="
+%{$fg[magenta]%}%n@%m%{$reset_color%}:${fg[cyan]}%~
+%(?.%{${fg[magenta]}%}.%{${fg[red]}%})%# ${reset_color}"
+    else
+        PROMPT="
+${fg[cyan]}%~
+%(?.%{${fg[magenta]}%}.%{${fg[red]}%})%# ${reset_color}"
+    fi
+}
+set_prompt
 
 source $ZDOTDIR/.zshrc_local_entrypoint
 
