@@ -153,5 +153,12 @@ zstyle ':vcs_info:*' actionformats '[%b|%a]'
 precmd () { vcs_info }
 RPROMPT=$RPROMPT'${vcs_info_msg_0_}'
 
+# tmux に入っていない => tmux 起動して main セッションに入る、なければ作る。
+tmux a -t main
+set tmux_ret $status
+if [[ $status == 0 ]]; then
+    tmux new-session -s main
+fi
+
 source $ZDOTDIR/.zshrc_local_entrypoint
 
