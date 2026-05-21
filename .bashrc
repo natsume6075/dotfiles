@@ -1,5 +1,8 @@
 alias adb='/mnt/c/ProgramData/chocolatey/bin/adb.exe'
 
+# Corporate proxy (defined in ~/.proxy_env, not committed to repo)
+[ -f ~/.proxy_env ] && . ~/.proxy_env
+
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples

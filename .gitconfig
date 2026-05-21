@@ -21,3 +21,6 @@
 [mergetool "vimdiff"]
     path = nvim
 
+[url "https://github.com/"]
+    insteadOf = git@github.com:
+
