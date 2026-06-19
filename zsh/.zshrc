@@ -10,6 +10,7 @@ setopt IGNOREEOF
 
 # PATH
 export PATH="$HOME/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 export PATH="//Applications/gnuplot.app:$PATH"
 export PATH=/usr/local/bin:$PATH
 export PATH=/usr/local/Cellar/gcc/9.2.0_3/bin/:$PATH

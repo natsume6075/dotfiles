@@ -1,7 +1,12 @@
+################################
+###   ！！！編集禁止！！！   ###
+################################
+#
+# zsh 設定(.zshenv を含む)は、~/.config/zsh 配下を SSoT とする。
+#
+# この ~/.zshenv は、ZDOTDIR 未設定の最初のシェルでのみ読み込まれる。
+# ここでは、ZDOTDIR を立てて実体へ委譲するだけ。
+# (ZDOTDIR 設定後の子シェルは $ZDOTDIR/.zshenv を直接読む)。
+#
 export ZDOTDIR=~/.config/zsh
-export EDITOR=nvim
-export LANG=ja_JP.UTF-8
-
-# Corporate proxy (defined in ~/.proxy_env, not committed to repo)
-[ -f ~/.proxy_env ] && . ~/.proxy_env
-
+[ -f "$ZDOTDIR/.zshenv" ] && source "$ZDOTDIR/.zshenv"
