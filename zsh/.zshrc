@@ -150,7 +150,7 @@ precmd () { vcs_info }
 RPROMPT=$RPROMPT'${vcs_info_msg_0_}'
 
 # tmux に入っていない => tmux 起動して main セッションに入る、なければ作る。
-if [[ -o interactive && -z "$TMUX" ]]; then
+if [[ $- == *i* && -z "$TMUX" ]]; then
   tmux attach -t main || tmux new-session -s main
 fi
 
