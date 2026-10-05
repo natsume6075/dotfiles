@@ -1,0 +1,19 @@
+#!/bin/sh
+# Start nvim as this herdr tab's preview server.
+# The socket is keyed by tab so hn-open can find the right nvim.
+# HN_TAB overrides HERDR_TAB_ID (set by hn-dev-tab / hn-open).
+set -eu
+root=$(cd "$(dirname "$0")/.." && pwd)
+tab=${HN_TAB:-${HERDR_TAB_ID:-}}
+if [ -z "$tab" ]; then
+  echo "hn-nvim: not inside a herdr tab" >&2
+  exec nvim "$@"
+fi
+dir="${XDG_RUNTIME_DIR:-/tmp}/herdr-nvim"
+sock="$dir/$(printf '%s' "$tab" | tr ':' '_').sock"
+mkdir -p "$dir"
+rm -f "$sock"
+# -c (not rtp) so plugin managers that reset 'runtimepath' cannot drop the companion.
+exec nvim --listen "$sock" \
+  -c "lua _G.herdr_nvim = dofile([[$root/nvim/herdr_nvim.lua]]); _G.herdr_nvim.setup()" \
+  "$@"

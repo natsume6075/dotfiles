@@ -1,0 +1,65 @@
+#!/usr/bin/env python3
+"""Open a clicked file:// link or selected `path[:line[:col]]` in this tab's nvim."""
+import os
+import re
+import shlex
+import subprocess
+import sys
+from urllib.parse import unquote, urlparse
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from hnlib import HN_NVIM, context, herdr, notify, nvim_alive, sock_path  # noqa: E402
+
+TARGET = re.compile(r"^(?P<path>.*?)(?::(?P<line>\d+))?(?::(?P<col>\d+))?$")
+
+
+def parse(raw, cwd):
+    raw = raw.strip().strip("`'\"()[]<>,;")
+    if raw.startswith("file://"):
+        u = urlparse(raw)
+        raw = unquote(u.path)
+        m = re.match(r"L(\d+)(?:C(\d+))?$", u.fragment or "")
+        line, col = (m.group(1), m.group(2)) if m else (None, None)
+        path = raw
+    else:
+        m = TARGET.match(raw)
+        path, line, col = m.group("path"), m.group("line"), m.group("col")
+    path = os.path.expanduser(path)
+    if not os.path.isabs(path):
+        path = os.path.join(cwd, path)
+    return os.path.normpath(path), int(line or 0), int(col or 0)
+
+
+ctx = context()
+cwd = ctx.get("focused_pane_cwd") or ctx.get("workspace_cwd") or os.getcwd()
+raw = (
+    os.environ.get("HERDR_PLUGIN_CLICKED_URL")
+    or ctx.get("clicked_url")
+    or ctx.get("selected_text")
+    or ""
+)
+if not raw.strip():
+    notify("herdr-nvim", "Nothing to open (no link or selection)")
+    sys.exit(1)
+
+path, line, col = parse(raw, cwd)
+if not os.path.exists(path):
+    notify("herdr-nvim", "Not found: %s" % path)
+    sys.exit(1)
+
+tab_id = ctx.get("tab_id") or os.environ.get("HERDR_TAB_ID", "")
+sock = sock_path(tab_id)
+
+if nvim_alive(sock):
+    q = path.replace("'", "''")
+    expr = "luaeval('_G.herdr_nvim.open(_A[1], _A[2], _A[3])', ['%s', %d, %d])" % (q, line, col)
+    subprocess.run(["nvim", "--server", sock, "--remote-expr", expr], check=True, capture_output=True)
+else:
+    # No live preview nvim in this tab: split next to the focused pane and start one.
+    split = ["pane", "split", ctx["focused_pane_id"], "--direction", "right", "--no-focus", "--cwd", cwd]
+    pane = herdr(*split)["result"]["pane"]["pane_id"]
+    herdr("pane", "rename", pane, "preview")
+    cmd = "HN_TAB=%s %s" % (shlex.quote(tab_id), shlex.quote(HN_NVIM))
+    if line:
+        cmd += " %s" % shlex.quote("+call cursor(%d,%d)" % (line, max(col, 1)))
+    herdr("pane", "run", pane, cmd + " " + shlex.quote(path))

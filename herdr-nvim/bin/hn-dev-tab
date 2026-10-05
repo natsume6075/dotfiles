@@ -1,0 +1,28 @@
+#!/usr/bin/env python3
+"""Open a new tab split into [shell | nvim preview]; focus stays on the shell."""
+import os
+import shlex
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from hnlib import HN_NVIM, context, herdr  # noqa: E402
+
+ctx = context()
+cwd = ctx.get("focused_pane_cwd") or ctx.get("workspace_cwd")
+
+args = ["tab", "create", "--focus"]
+if ctx.get("workspace_id"):
+    args += ["--workspace", ctx["workspace_id"]]
+if cwd:
+    args += ["--cwd", cwd]
+res = herdr(*args)["result"]
+tab_id = res["tab"]["tab_id"]
+root_pane = res["root_pane"]["pane_id"]
+
+split = ["pane", "split", root_pane, "--direction", "right", "--no-focus"]
+if cwd:
+    split += ["--cwd", cwd]
+preview = herdr(*split)["result"]["pane"]["pane_id"]
+
+herdr("pane", "rename", preview, "preview")
+herdr("pane", "run", preview, "HN_TAB=%s %s" % (shlex.quote(tab_id), shlex.quote(HN_NVIM)))

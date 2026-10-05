@@ -1,0 +1,18 @@
+id = "herdr-nvim"
+name = "herdr-nvim"
+version = "0.0.1"
+min_herdr_version = "0.9.0"
+description = "Agent pane + nvim preview pane, linked"
+platforms = ["linux", "macos"]
+
+[[actions]]
+id = "dev-tab"
+title = "New tab: shell + nvim preview"
+contexts = ["global", "workspace", "tab", "pane"]
+command = ["bin/hn-dev-tab"]
+
+[[actions]]
+id = "open"
+title = "Open in nvim"
+contexts = ["selection", "pane"]
+command = ["bin/hn-open"]
