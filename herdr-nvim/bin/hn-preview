@@ -1,0 +1,125 @@
+#!/usr/bin/env python3
+"""Share the right pane between nvim and a resident terminal-browser.
+
+  hn-preview PATH      show PATH in the browser (starts it on first use)
+  hn-preview --toggle  swap nvim and the browser in the right pane
+  hn-preview --reload  reload the browser without touching layout or focus
+
+The hidden one lives in a "preview" tab and keeps running. Moving a pane out of
+a tab closes that tab when it becomes empty, so the hidden pane always stays
+next to the one that is leaving the dev tab.
+"""
+import json
+import os
+import shlex
+import sys
+import time
+from urllib.parse import quote
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from hnlib import browsers, cdp, context, herdr, notify, panes, preview_state_path  # noqa: E402
+
+
+def load(tab):
+    try:
+        with open(preview_state_path(tab)) as f:
+            st = json.load(f)
+    except (OSError, ValueError):
+        return None
+    alive = panes()
+    return st if st["nvim"] in alive and st["browser"] in alive else None
+
+
+def save(tab, st):
+    path = preview_state_path(tab)
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w") as f:
+        json.dump(st, f)
+
+
+def browser_of(pane):
+    return next((b for b in browsers() if b["pane"]["pane"] == pane), None)
+
+
+def launch(pane, path):
+    """Run terminal-browser in `pane` and wait until it registers."""
+    herdr("pane", "run", pane, "terminal-browser open %s --no-merge" % shlex.quote(path))
+    for _ in range(50):
+        if browser_of(pane):
+            return
+        time.sleep(0.2)
+    notify("herdr-nvim", "terminal-browser did not start")
+    sys.exit(1)
+
+
+def start(tab, nvim_pane, path):
+    """Create the preview tab and open the browser in it."""
+    res = herdr("tab", "create", "--label", "preview", "--cwd", os.path.dirname(path))["result"]
+    browser = res["root_pane"]["pane_id"]
+    launch(browser, path)
+    st = {"nvim": nvim_pane, "browser": browser, "park": res["tab"]["tab_id"]}
+    save(tab, st)
+    return st
+
+
+def navigate(st, path, reload=False):
+    b = browser_of(st["browser"])
+    active = next((t for t in b["tabs"] if t["active"]), None) if b else None
+    if not active:
+        return
+    url = "file://" + quote(path)
+    if reload or active["url"] == url:
+        cdp(b["cdpPort"], active["targetId"], "Page.reload")
+    else:
+        cdp(b["cdpPort"], active["targetId"], "Page.navigate", {"url": url})
+
+
+def show(tab, st, which):
+    """Put `which` ("nvim" or "browser") in the dev tab; park the other one."""
+    other = "browser" if which == "nvim" else "nvim"
+    where = panes()
+    if where[st[which]] == tab:
+        return
+    herdr("pane", "move", st[other], "--tab", st["park"], "--target-pane", st[which], "--split", "right", "--no-focus")
+    rest = [p for p, t in panes().items() if t == tab]
+    if not rest:
+        notify("herdr-nvim", "No pane left in the dev tab to split from")
+        sys.exit(1)
+    herdr("pane", "move", st[which], "--tab", tab, "--target-pane", rest[0], "--split", "right", "--focus")
+
+
+def main():
+    arg = sys.argv[1] if len(sys.argv) > 1 else ""
+    ctx = context()
+    tab = os.environ.get("HN_TAB") or ctx.get("tab_id") or os.environ.get("HERDR_TAB_ID", "")
+    if not tab:
+        notify("herdr-nvim", "Not inside a herdr tab")
+        sys.exit(1)
+    st = load(tab)
+
+    if arg == "--reload":
+        if st:
+            navigate(st, "", reload=True)
+        return
+    if arg == "--toggle":
+        if not st:
+            notify("herdr-nvim", "No preview yet: press <leader>v in an html buffer")
+            sys.exit(1)
+        show(tab, st, "nvim" if panes()[st["browser"]] == tab else "browser")
+        return
+
+    path = os.path.abspath(arg)
+    if not os.path.isfile(path):
+        notify("herdr-nvim", "Not found: %s" % path)
+        sys.exit(1)
+    if not st:
+        nvim_pane = os.environ.get("HERDR_PANE_ID") or ctx.get("focused_pane_id", "")
+        st = start(tab, nvim_pane, path)
+    elif browser_of(st["browser"]):
+        navigate(st, path)
+    else:
+        launch(st["browser"], path)
+    show(tab, st, "browser")
+
+
+main()
