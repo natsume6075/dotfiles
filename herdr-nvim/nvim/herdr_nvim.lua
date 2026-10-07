@@ -84,7 +84,7 @@ function M.setup()
       group = augroup,
       pattern = "html",
       callback = function(a)
-        vim.keymap.set("n", "<leader>v", function()
+        vim.keymap.set("n", "<leader>t", function()
           vim.cmd("silent! write")
           preview(vim.api.nvim_buf_get_name(a.buf))
         end, { buffer = a.buf, desc = "Preview html in terminal-browser" })

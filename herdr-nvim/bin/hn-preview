@@ -103,7 +103,7 @@ def main():
         return
     if arg == "--toggle":
         if not st:
-            notify("herdr-nvim", "No preview yet: press <leader>v in an html buffer")
+            notify("herdr-nvim", "No preview yet: press <leader>t in an html buffer")
             sys.exit(1)
         show(tab, st, "nvim" if panes()[st["browser"]] == tab else "browser")
         return

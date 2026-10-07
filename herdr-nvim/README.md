@@ -40,7 +40,7 @@ type = "plugin_action"
 command = "open"                   # experimental, see Limits
 
 [[keys.command]]
-key = "prefix+v"
+key = "prefix+t"
 type = "plugin_action"
 command = "preview-toggle"         # swap nvim and the browser preview
 ```
@@ -52,8 +52,8 @@ Then `herdr server reload-config`.
 Needs [terminal-browser](https://github.com/zenbu-labs/terminal-browser) and a terminal with kitty graphics
 support (it cannot draw inside nvim's `:terminal`).
 
-- In an html buffer of the dev-tab nvim, `<leader>v` shows the file in a resident browser that takes the nvim
-  pane's place (`[shell | browser]`). `prefix+v` swaps back; press it again to swap again.
+- In an html buffer of the dev-tab nvim, `<leader>t` shows the file in a resident browser that takes the nvim
+  pane's place (`[shell | browser]`). `prefix+t` swaps back; press it again to swap again.
 - Saving an html buffer reloads the browser without changing layout or focus.
 - The hidden pane keeps running in a `preview` tab. State is per dev tab in
   `$XDG_RUNTIME_DIR/herdr-nvim/<tab_id>.preview.json`. herdr closes a tab when its last pane moves out, so
