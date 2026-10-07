@@ -65,6 +65,13 @@ local function preview(arg)
   vim.system({ root .. "/bin/hn-preview", arg }, { detach = true })
 end
 
+local function map_preview(buf)
+  vim.keymap.set("n", "<leader>t", function()
+    vim.cmd("silent! write")
+    preview(vim.api.nvim_buf_get_name(buf))
+  end, { buffer = buf, desc = "Preview html in terminal-browser" })
+end
+
 function M.setup()
   augroup = vim.api.nvim_create_augroup("HerdrNvim", { clear = true })
   vim.api.nvim_create_autocmd({ "BufReadPost", "BufWritePost", "BufFilePost" }, {
@@ -84,10 +91,7 @@ function M.setup()
       group = augroup,
       pattern = "html",
       callback = function(a)
-        vim.keymap.set("n", "<leader>t", function()
-          vim.cmd("silent! write")
-          preview(vim.api.nvim_buf_get_name(a.buf))
-        end, { buffer = a.buf, desc = "Preview html in terminal-browser" })
+        map_preview(a.buf)
       end,
     })
     vim.api.nvim_create_autocmd("BufWritePost", {
@@ -102,6 +106,9 @@ function M.setup()
   for _, b in ipairs(vim.api.nvim_list_bufs()) do
     if vim.api.nvim_buf_is_loaded(b) then
       start(b)
+      if vim.bo[b].filetype == "html" and vim.fn.executable("terminal-browser") == 1 then
+        map_preview(b)
+      end
     end
   end
 end
