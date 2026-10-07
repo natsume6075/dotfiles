@@ -16,7 +16,7 @@ import sys
 import time
 from urllib.parse import quote
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
 from hnlib import browsers, cdp, context, herdr, notify, panes, preview_state_path  # noqa: E402
 
 
@@ -74,18 +74,23 @@ def navigate(st, path, reload=False):
         cdp(b["cdpPort"], active["targetId"], "Page.navigate", {"url": url})
 
 
+def partner(tab, leaving):
+    """A pane that stays in `tab` while `leaving` is parked (an empty tab would close)."""
+    rest = [p for p, t in panes().items() if t == tab and p != leaving]
+    if not rest:
+        notify("herdr-nvim", "Needs another pane in this tab to sit next to the preview")
+        sys.exit(1)
+    return rest[0]
+
+
 def show(tab, st, which):
     """Put `which` ("nvim" or "browser") in the dev tab; park the other one."""
     other = "browser" if which == "nvim" else "nvim"
-    where = panes()
-    if where[st[which]] == tab:
+    if panes()[st[which]] == tab:
         return
+    anchor = partner(tab, st[other])
     herdr("pane", "move", st[other], "--tab", st["park"], "--target-pane", st[which], "--split", "right", "--no-focus")
-    rest = [p for p, t in panes().items() if t == tab]
-    if not rest:
-        notify("herdr-nvim", "No pane left in the dev tab to split from")
-        sys.exit(1)
-    herdr("pane", "move", st[which], "--tab", tab, "--target-pane", rest[0], "--split", "right", "--focus")
+    herdr("pane", "move", st[which], "--tab", tab, "--target-pane", anchor, "--split", "right", "--focus")
 
 
 def main():
@@ -114,6 +119,7 @@ def main():
         sys.exit(1)
     if not st:
         nvim_pane = os.environ.get("HERDR_PANE_ID") or ctx.get("focused_pane_id", "")
+        partner(tab, nvim_pane)
         st = start(tab, nvim_pane, path)
     elif browser_of(st["browser"]):
         navigate(st, path)

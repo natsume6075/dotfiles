@@ -58,20 +58,6 @@ local function start(bufnr)
   watchers[bufnr] = { handle = handle, timer = timer }
 end
 
-local root = debug.getinfo(1, "S").source:sub(2):match("(.*)/nvim/[^/]*$")
-
---- Run bin/hn-preview with `arg` (an html path or --reload), detached.
-local function preview(arg)
-  vim.system({ root .. "/bin/hn-preview", arg }, { detach = true })
-end
-
-local function map_preview(buf)
-  vim.keymap.set("n", "<leader>t", function()
-    vim.cmd("silent! write")
-    preview(vim.api.nvim_buf_get_name(buf))
-  end, { buffer = buf, desc = "Preview html in terminal-browser" })
-end
-
 function M.setup()
   augroup = vim.api.nvim_create_augroup("HerdrNvim", { clear = true })
   vim.api.nvim_create_autocmd({ "BufReadPost", "BufWritePost", "BufFilePost" }, {
@@ -86,29 +72,10 @@ function M.setup()
       stop(a.buf)
     end,
   })
-  if vim.fn.executable("terminal-browser") == 1 then
-    vim.api.nvim_create_autocmd("FileType", {
-      group = augroup,
-      pattern = "html",
-      callback = function(a)
-        map_preview(a.buf)
-      end,
-    })
-    vim.api.nvim_create_autocmd("BufWritePost", {
-      group = augroup,
-      pattern = "*.html",
-      callback = function()
-        preview("--reload")
-      end,
-    })
-  end
   -- Files passed on the command line are read before `-c` runs.
   for _, b in ipairs(vim.api.nvim_list_bufs()) do
     if vim.api.nvim_buf_is_loaded(b) then
       start(b)
-      if vim.bo[b].filetype == "html" and vim.fn.executable("terminal-browser") == 1 then
-        map_preview(b)
-      end
     end
   end
 end

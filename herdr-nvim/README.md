@@ -52,9 +52,14 @@ Then `herdr server reload-config`.
 Needs [terminal-browser](https://github.com/zenbu-labs/terminal-browser) and a terminal with kitty graphics
 support (it cannot draw inside nvim's `:terminal`).
 
-- In an html buffer of the dev-tab nvim, `<leader>t` shows the file in a resident browser that takes the nvim
-  pane's place (`[shell | browser]`). `prefix+t` swaps back; press it again to swap again.
-- Saving an html buffer reloads the browser without changing layout or focus.
+- `bin/hn-preview` does the work and works with any nvim in a herdr pane (it needs `HERDR_TAB_ID` /
+  `HERDR_PANE_ID`, not `hn-nvim`). Link it onto your PATH (dotfiles `setup.sh` does:
+  `~/.local/bin/hn-preview`) and bind the keys in your own nvim config, e.g. `<leader>t` on html buffers to
+  `hn-preview <file>` and `BufWritePost *.html` to `hn-preview --reload`.
+- `hn-preview <file>` shows the file in a resident browser that takes the nvim pane's place
+  (`[shell | browser]`). `prefix+t` swaps back; press it again to swap again.
+- The tab needs another pane next to nvim; otherwise hn-preview refuses (an emptied tab would close).
+- `--reload` reloads the browser without changing layout or focus.
 - The hidden pane keeps running in a `preview` tab. State is per dev tab in
   `$XDG_RUNTIME_DIR/herdr-nvim/<tab_id>.preview.json`. herdr closes a tab when its last pane moves out, so
   the hidden pane always moves next to the one leaving.
