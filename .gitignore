@@ -1,0 +1,3 @@
+# home の ~/.zshenv は setup.sh が注入するマシン所有の実ファイル。repo には置かない
+.zshenv
+**/.zshenv
