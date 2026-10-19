@@ -1,9 +1,0 @@
-if [[ $NAME == "DESKTOP-IVL0EDA" ]]; then
-    source $DOTFILES_DIR/zsh/local/.zshrc_local_DESKTOP-IVL0EDA
-fi
-if [[ $NAME == "70-24130" ]]; then
-    source $DOTFILES_DIR/zsh/local/.zshrc_local_70-24130
-fi
-if [[ $NAME == "natsume_3070" ]]; then
-    source $DOTFILES_DIR/zsh/local/.zshrc_local_natsume_3070
-fi

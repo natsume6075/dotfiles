@@ -1,8 +1,6 @@
-alias adb='/mnt/c/ProgramData/chocolatey/bin/adb.exe'
-
 # bash 固有の対話設定。~/.bashrc に setup.sh が注入するブロックから、対話シェルのときだけ読まれる。
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
+# 環境変数は shrc_common/env.sh、zsh と共通の alias は shrc_common/aliases.sh に置く。
+. "$DOTFILES_DIR/shrc_common/aliases.sh"
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options

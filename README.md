@@ -27,9 +27,12 @@ setup.sh を実行した後のディレクトリ構成。
 - `.bashrc` / `.zshenv` / `.zshrc` は symlink にしない。マシン所有の実ファイルとして残し、`setup.sh` が `# >>> dotfiles >>>` ～ `# <<< dotfiles <<<` のブロックだけを先頭に注入する(再実行しても 1 個のまま)。
   - このブロックが dotfiles の唯一のエントリポイント。ブロックの外は、マシン専用の自由枠(インストーラーの追記もここに入る)。
 - 読み込みの流れ:
-  - 環境変数: `.zshenv` / `.bashrc` → `shrc_common/env.sh` → `shrc_local/<hostname>.sh`
+  - 環境変数: `.zshenv` / `.bashrc` → `shrc_common/env.sh` → `shrc_local/<ホスト名>.sh`
+  - 共通の alias(対話のみ): `zsh/rc.zsh` / `bash/rc.bash` → `shrc_common/aliases.sh`。zsh と bash で文法が異なるもの(`alias -g` など)は、それぞれの `rc.*` に置く。
   - zsh の対話設定: `.zshrc` → `zsh/rc.zsh`
   - bash の対話設定: `.bashrc` → `bash/rc.bash`(対話シェルのときのみ)
+- ホスト名は、WSL が設定する `$NAME`(Windows のコンピューター名)を優先し、無ければ `uname -n`。
+- dotfiles の場所(`DOTFILES_DIR`)は、rc ファイルに焼き込まない。`setup.sh` が張る `~/.config/shrc_common`(symlink)の物理的な親ディレクトリから、`env.sh` が求める。repo を移したら、`setup.sh` を再実行して symlink を張り直す。`setup.sh` は、どのディレクトリから、どの呼び方(相対パス・symlink 経由・他のリポジトリからの呼び出し)で実行してもよい。ただし source はしない。
 - `ZDOTDIR` は使わない。
 - repo に入れられない環境変数は `~/.config/credentials/*.env`(`KEY=VALUE` 形式・chmod 600)に置く。`env.sh` が全部読む。
 

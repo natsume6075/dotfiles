@@ -2,6 +2,11 @@
 # ~/.zshenv と ~/.bashrc に setup.sh が注入するブロックから読み込まれる。
 # 秘密情報・会社固有の設定は書かない (repo は public)。
 
+# dotfiles のルート。setup.sh が張る ~/.config/shrc_common (symlink) の物理的な親ディレクトリ。
+# パスを rc ファイルに焼き込まないので、repo を移しても setup.sh の再実行で symlink を張り直すだけでよい。
+DOTFILES_DIR=$(cd -P ~/.config/shrc_common/.. 2>/dev/null && pwd -P)
+export DOTFILES_DIR
+
 export EDITOR=nvim
 export LANG=ja_JP.UTF-8
 
@@ -20,5 +25,8 @@ _dotfiles_load_env_dir() {
 _dotfiles_load_env_dir
 unset -f _dotfiles_load_env_dir
 
-# ホスト別の共通設定 (shrc_local/<hostname>.sh)。あれば読む。
-[ -f "$DOTFILES_DIR/shrc_local/$(uname -n).sh" ] && . "$DOTFILES_DIR/shrc_local/$(uname -n).sh"
+# ホスト別の共通設定 (shrc_local/<ホスト名>.sh)。あれば読む。
+# ホスト名は、WSL が設定する $NAME (Windows のコンピューター名) を優先し、無ければ uname -n。
+_dotfiles_host=${NAME:-$(uname -n)}
+[ -n "$DOTFILES_DIR" ] && [ -f "$DOTFILES_DIR/shrc_local/$_dotfiles_host.sh" ] && . "$DOTFILES_DIR/shrc_local/$_dotfiles_host.sh"
+unset _dotfiles_host
