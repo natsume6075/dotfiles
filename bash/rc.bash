@@ -1,17 +1,8 @@
 alias adb='/mnt/c/ProgramData/chocolatey/bin/adb.exe'
 
-# Corporate proxy (defined in ~/.proxy_env, not committed to repo)
-[ -f ~/.proxy_env ] && . ~/.proxy_env
-
-# ~/.bashrc: executed by bash(1) for non-login shells.
+# bash 固有の対話設定。~/.bashrc に setup.sh が注入するブロックから、対話シェルのときだけ読まれる。
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
-
-# If not running interactively, don't do anything
-case $- in
-    *i*) ;;
-      *) return;;
-esac
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options

@@ -149,10 +149,10 @@ zstyle ':vcs_info:*' actionformats '[%b|%a]'
 precmd () { vcs_info }
 RPROMPT=$RPROMPT'${vcs_info_msg_0_}'
 
-# tmux に入っていない => tmux 起動して main セッションに入る、なければ作る。
-if [[ $- == *i* && -z "$TMUX" ]]; then
-  tmux attach -t main || tmux new-session -s main
-fi
+# # tmux に入っていない => tmux 起動して main セッションに入る、なければ作る。
+# if [[ $- == *i* && -z "$TMUX" ]]; then
+#   tmux attach -t main || tmux new-session -s main
+# fi
 
 # プロンプトを2行で表示、時刻を表示
 # PROMPT="%(?.%{${fg[green]}%}.%{${fg[red]}%})%n${reset_color}@${fg[blue]}%m${reset_color}(%*%) %~
@@ -172,5 +172,5 @@ ${fg[cyan]}%~
 }
 set_prompt
 
-source $ZDOTDIR/.zshrc_local_entrypoint
+source $DOTFILES_DIR/zsh/.zshrc_local_entrypoint
 
