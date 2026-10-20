@@ -15,6 +15,11 @@ export PATH="//Applications/gnuplot.app:$PATH"
 export PATH=/usr/local/bin:$PATH
 export PATH=/usr/local/Cellar/gcc/9.2.0_3/bin/:$PATH
 
+# nvm/Codex is optional; load it in interactive zsh when installed.
+# Child setup scripts cannot export PATH back into their calling shell.
+export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
+[ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
+
 # 色を使用
 autoload -Uz colors
 colors
