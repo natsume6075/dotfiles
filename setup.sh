@@ -42,11 +42,11 @@ inject() {
     echo "injected: $target"
 }
 
+# 段階ごとの入口だけを書く。対話・非対話とシェル別の振り分けは、repo 側の env.sh / interactive.sh が行う。
 inject ~/.zshenv '. ~/.config/shrc_common/env.sh'
-inject ~/.zshrc '[ -n "$DOTFILES_DIR" ] || . ~/.config/shrc_common/env.sh
-. "$DOTFILES_DIR/zsh/rc.zsh"'
+inject ~/.zshrc '. ~/.config/shrc_common/interactive.sh'
 inject ~/.bashrc '. ~/.config/shrc_common/env.sh
-case $- in *i*) . "$DOTFILES_DIR/bash/rc.bash";; esac'
+case $- in *i*) . ~/.config/shrc_common/interactive.sh;; esac'
 
 # 暫定: ZDOTDIR=~/.config/zsh を引き継いだ既存プロセス (tmux/herdr など) の zsh 向けの shim。
 # 新しい zsh が ZDOTDIR を捨てて、home の ~/.zshenv / ~/.zshrc を読むようにする。

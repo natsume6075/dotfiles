@@ -1,6 +1,5 @@
-# bash 固有の対話設定。~/.bashrc に setup.sh が注入するブロックから、対話シェルのときだけ読まれる。
-# 環境変数は shrc_common/env.sh、zsh と共通の alias は shrc_common/aliases.sh に置く。
-. "$DOTFILES_DIR/shrc_common/aliases.sh"
+# bash 固有の対話設定。shrc_common/interactive.sh が、共通の設定のあとに読み込む。
+# 環境変数は shrc_common/env.sh、zsh と共通の alias は shrc_common/interactive.sh に置く。
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options

@@ -1,6 +1,3 @@
-# zsh / bash 共通の alias
-. "$DOTFILES_DIR/shrc_common/aliases.sh"
-
 # 不適切なロケール設定を修復する
 eval $(/usr/bin/locale-check C.UTF-8)
 
