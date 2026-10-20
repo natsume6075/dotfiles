@@ -12,6 +12,12 @@ contexts = ["global", "workspace", "tab", "pane"]
 command = ["bin/hn-dev-tab"]
 
 [[actions]]
+id = "preview-toggle"
+title = "Swap nvim and browser preview in the right pane"
+contexts = ["global", "workspace", "tab", "pane"]
+command = ["bin/hn-preview", "--toggle"]
+
+[[actions]]
 id = "open"
 title = "Open in nvim"
 contexts = ["selection", "pane"]
