@@ -1,17 +1,5 @@
-alias adb='/mnt/c/ProgramData/chocolatey/bin/adb.exe'
-
-# Corporate proxy (defined in ~/.proxy_env, not committed to repo)
-[ -f ~/.proxy_env ] && . ~/.proxy_env
-
-# ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
-
-# If not running interactively, don't do anything
-case $- in
-    *i*) ;;
-      *) return;;
-esac
+# bash 固有の対話設定。shrc_common/interactive.sh が、共通の設定のあとに読み込む。
+# 環境変数は shrc_common/env.sh、zsh と共通の alias は shrc_common/interactive.sh に置く。
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
