@@ -19,6 +19,10 @@ if [ -e ~/.config/shrc_common ] && [ ! -L ~/.config/shrc_common ]; then
 fi
 ln -sfnv "$SCRIPT_DIR/shrc_common" ~/.config/shrc_common
 
+# herdr-nvim's html preview command, called from nvim (user/herdr_preview.vim)
+mkdir -p ~/.local/bin
+ln -sfv "$SCRIPT_DIR/herdr-nvim/bin/hn-preview" ~/.local/bin/hn-preview
+
 # ~/.zshenv, ~/.zshrc, ~/.bashrc は symlink にせず、マシン所有の実ファイルとして残す。
 # dotfiles を読み込むブロックだけを先頭に注入する (冪等。マーカーの内側だけ置き換える)。
 # $1: 対象ファイル  $2: 注入するブロックの本文 (マーカー行は含めない)

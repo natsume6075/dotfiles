@@ -38,9 +38,34 @@ command = "dev-tab"
 key = "prefix+f"
 type = "plugin_action"
 command = "open"                   # experimental, see Limits
+
+[[keys.command]]
+key = "prefix+t"
+type = "plugin_action"
+command = "preview-toggle"         # swap nvim and the browser preview
 ```
 
 Then `herdr server reload-config`.
+
+## HTML preview
+
+Needs [terminal-browser](https://github.com/zenbu-labs/terminal-browser) and a terminal with kitty graphics
+support (it cannot draw inside nvim's `:terminal`).
+
+- `bin/hn-preview` does the work and works with any nvim in a herdr pane (it needs `HERDR_TAB_ID` /
+  `HERDR_PANE_ID`, not `hn-nvim`). Link it onto your PATH (dotfiles `setup.sh` does:
+  `~/.local/bin/hn-preview`) and bind the keys in your own nvim config, e.g. `<leader>t` on html buffers to
+  `hn-preview <file>` and `BufWritePost *.html` to `hn-preview --reload`.
+- `hn-preview <file>` shows the file in a resident browser that takes the nvim pane's place
+  (`[shell | browser]`). `prefix+t` swaps back; press it again to swap again.
+- The tab needs another pane next to nvim; otherwise hn-preview refuses (an emptied tab would close).
+- `--reload` reloads the browser without changing layout or focus.
+- The hidden pane keeps running in a `preview` tab. State is per dev tab in
+  `$XDG_RUNTIME_DIR/herdr-nvim/<tab_id>.preview.json`. herdr closes a tab when its last pane moves out, so
+  the hidden pane always moves next to the one leaving.
+- Navigation talks to the browser's CDP port directly (bundled agent-browser needs a newer glibc than some hosts).
+  The port listens on 127.0.0.1 without auth, so on a shared host other users can drive your browser while it runs.
+  Stop it with `terminal-browser shutdown`.
 
 ## How it finds the right nvim
 
