@@ -24,3 +24,6 @@
 [url "https://github.com/"]
     insteadOf = git@github.com:
 
+# Host-specific credentials and identity stay outside this repository.
+[include]
+    path = ~/.config/git/local.inc

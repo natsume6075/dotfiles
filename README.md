@@ -46,3 +46,9 @@ setup.sh を実行した後のディレクトリ構成。
 
 - プロキシ設定はリポジトリに含めない。`~/.proxy_env` に集約し、`shrc_common/env.sh` がそれを source する。`~/.proxy_env` が存在しない場合は無視されるため、非プロキシ環境でもそのまま動作する。
 - プロキシ環境下でのセットアップは [setup/linux](https://github.com/natsume6075/setup/tree/master/linux) を参照。
+
+## マシン固有のGit設定
+
+`.gitconfig` は `~/.config/git/local.inc` を任意で読み込む。認証helper、個別のuser.name/emailなどはこのローカルファイルへ置く（Git対象外、推奨mode 0600）。ファイルがなくても共通設定は利用できる。
+
+`~/.gitconfig` がこのrepoへのsymlinkなので、`gh auth setup-git` 等のツールが共通ファイルを書き換えた場合は、そのマシン専用設定をlocal.incへ移す。トークン自体はGitへ保存しない。
